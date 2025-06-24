@@ -30,7 +30,7 @@ const schema = a.schema({
     .authorization((allow) => [allow.publicApiKey()])
     .handler(
       a.handler.custom({
-        dataSource: "EventBridgeDataSource",
+        dataSource: "DaveEventBridgeDataSource",
         entry: "./publishOrderToEventBridge.js",
       })
     ),
