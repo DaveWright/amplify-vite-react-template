@@ -17,8 +17,48 @@ const schema = a.schema({
     orderId: a.id().required(),
     status: a.ref("OrderStatus").required(),
     message: a.string().required()
-  })
+  }),
+
+  publishOrderToEventBridge: a
+    .mutation()
+    .arguments({
+      orderId: a.id().required(),
+      status: a.string().required(),
+      message: a.string().required(),
+    })
+    .returns(a.ref("OrderStatusChange"))
+    .authorization((allow) => [allow.publicApiKey()])
+    .handler(
+      a.handler.custom({
+        dataSource: "EventBridgeDataSource",
+        entry: "./publishOrderToEventBridge.js",
+      })
+    ),
+  publishOrderFromEventBridge: a
+    .mutation()
+    .arguments({
+      orderId: a.id().required(),
+      status: a.string().required(),
+      message: a.string().required(),
+    })
+    .returns(a.ref("OrderStatusChange"))
+    .authorization((allow) => [allow.publicApiKey(), allow.guest()])
+    .handler(
+      a.handler.custom({
+        entry: "./publishOrderFromEventBridge.js",
+      })
+    ),
+  onOrderFromEventBridge: a
+    .subscription()
+    .for(a.ref("publishOrderFromEventBridge"))
+    .authorization((allow) => [allow.publicApiKey()])
+    .handler(
+      a.handler.custom({
+        entry: "./onOrderFromEventBridge.js",
+      })
+    ),
 });
+
 
 export type Schema = ClientSchema<typeof schema>;
 
