@@ -13,7 +13,7 @@ const schema = a.schema({
     })
     .authorization((allow) => [allow.publicApiKey()]),
   OrderStatus: a.enum(["OrderPending", "OrderShipped", "OrderDelivered"]),
-  OrderStatusChanged: a.customType({
+  OrderStatusChange: a.customType({
     orderId: a.id().required(),
     status: a.ref("OrderStatus").required(),
     message: a.string().required()
