@@ -14,14 +14,13 @@ function App() {
   }, []);
 
   function createTodo() {
-    client.models.Todo.create({ content: window.prompt("Todo content") });
-
-
     client.mutations.publishOrderToEventBridge({
       orderId: "12345",
       status: "SHIPPED",
       message: "Order has been shipped",
     });
+
+    client.models.Todo.create({ content: window.prompt("Todo content") });
   }
 
   return (

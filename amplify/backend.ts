@@ -21,7 +21,7 @@ const eventStack = backend.createStack("MyExternalDataSources");
 // Reference or create an EventBridge EventBus
 const eventBus = aws_events.EventBus.fromEventBusName(
   eventStack,
-  "MyEventBus",
+  "DaveEventBus",
   "default"
 );
 
@@ -48,7 +48,7 @@ const eventBusRole = new Role(eventStack, "AppSyncInvokeRole", {
 // Create an EventBridge rule to route events to the AppSync API
 new aws_events.CfnRule(eventStack, "MyOrderRule", {
   eventBusName: eventBus.eventBusName,
-  name: "broadcastOrderStatusChange",
+  name: "daveUnicardBroadcastOrderStatusChange",
   eventPattern: {
     source: ["amplify.orders"],
     /* The shape of the event pattern must match EventBridge's event message structure.
